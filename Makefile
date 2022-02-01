@@ -10,3 +10,7 @@ dashboard-user:
 	$(KCONF) kubectl create -f dashboard/
 
 dashboard: dashboard-install dashboard-user
+
+
+nfs-install:
+	$(KCONF) kubectl apply -f nfs-subdir/
