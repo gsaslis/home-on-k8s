@@ -19,3 +19,10 @@ pihole:
   helm install pihole mojo2600/pihole \
     --namespace pihole \
     --values pi-hole/pihole.values.yml
+
+
+mosquitto-prep:
+  kubectl create namespace mosquitto
+
+mosquitto:
+  kubectl apply --filename=mosquitto/ --namespace mosquitto

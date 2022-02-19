@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    app: mosquitto
+  labels:
+    app.kubernetes.io/instance: mosquitto
+    app.kubernetes.io/name: mosquitto
+    app.kubernetes.io/version: 2.0.11
+  name: mosquitto
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: mosquitto
+      app.kubernetes.io/name: mosquitto
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: mosquitto
+        app.kubernetes.io/name: mosquitto
+    spec:
+      automountServiceAccountToken: true
+      containers:
+      - image: eclipse-mosquitto:2.0.11
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 1883
+          timeoutSeconds: 1
+        name: mosquitto
+        ports:
+        - containerPort: 1883
+          hostPort: 1883
+          name: mqtt
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 1883
+          timeoutSeconds: 1
+        resources: {}
+        startupProbe:
+          failureThreshold: 30
+          periodSeconds: 5
+          successThreshold: 1
+          tcpSocket:
+            port: 1883
+          timeoutSeconds: 1
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /mosquitto/configinc
+          name: configinc
+        - mountPath: /mosquitto/data
+          name: data
+        - mountPath: /mosquitto/config/mosquitto.conf
+          name: mosquitto-config
+          subPath: mosquitto.conf
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: default
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: configinc
+        persistentVolumeClaim:
+          claimName: mosquitto-configinc
+      - name: data
+        persistentVolumeClaim:
+          claimName: mosquitto-data
+      - configMap:
+          defaultMode: 420
+          name: mosquitto-config
+        name: mosquitto-config

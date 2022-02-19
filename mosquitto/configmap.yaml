@@ -1,0 +1,16 @@
+apiVersion: v1
+data:
+  mosquitto.conf: |
+    listener 1883
+    allow_anonymous true
+    persistence true
+    persistence_location /mosquitto/data
+    autosave_interval 1800
+    include_dir /mosquitto/configinc
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/instance: mosquitto
+    app.kubernetes.io/name: mosquitto
+    app.kubernetes.io/version: 2.0.11
+  name: mosquitto-config
