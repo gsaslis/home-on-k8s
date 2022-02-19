@@ -7,7 +7,7 @@ metadata:
   # replace with namespace where provisioner is deployed
   namespace: default
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: Recreate
   selector:
@@ -32,6 +32,16 @@ spec:
               value: 192.168.100.20
             - name: NFS_PATH
               value: /volume3/kubernetes
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - nfs-client-provisioner
+              topologyKey: "kubernetes.io/hostname"
       volumes:
         - name: nfs-client-root
           nfs:
