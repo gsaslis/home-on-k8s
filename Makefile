@@ -17,6 +17,14 @@ mosquitto-prep:
 mosquitto:
   kubectl apply --filename=mosquitto/ --namespace mosquitto
 
+nextcloud:
+  kubectl create namespace nextcloud || true
+  kubectl apply --filename=nextcloud/postgres/ --namespace nextcloud
+  kubectl apply --filename=nextcloud/secret.yaml --namespace nextcloud
+  helm install nextcloud nextcloud/nextcloud \
+    --namespace nextcloud \
+    --values nextcloud/nextcloud.values.yml
+
 nfs-install:
 	$(KCONF) kubectl apply -f nfs-subdir/
 
