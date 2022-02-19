@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: nextcloud
+  POSTGRES_USER: nextcloud
+  POSTGRES_PASSWORD: some-super-safe-password-you-shouldnt-upload-to-github

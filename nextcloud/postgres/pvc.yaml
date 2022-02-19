@@ -1,0 +1,14 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres-pv-claim
+  labels:
+    app: nextcloud-postgres
+spec:
+  storageClassName: managed-nfs-storage
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
