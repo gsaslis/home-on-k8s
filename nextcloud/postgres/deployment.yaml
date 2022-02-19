@@ -3,6 +3,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nextcloud-postgres
+  labels:
+    app: nextcloud-postgres
 spec:
   replicas: 1
   template:
@@ -17,6 +19,8 @@ spec:
           ports:
             - containerPort: 5432
           envFrom:
+            - secretRef:
+                name: nextcloud-postgres-secrets
             - configMapRef:
                 name: postgres-config
           volumeMounts:
