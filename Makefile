@@ -11,6 +11,11 @@ dashboard-user:
 
 dashboard: dashboard-install dashboard-user
 
+mosquitto-prep:
+  kubectl create namespace mosquitto
+
+mosquitto:
+  kubectl apply --filename=mosquitto/ --namespace mosquitto
 
 nfs-install:
 	$(KCONF) kubectl apply -f nfs-subdir/
@@ -19,10 +24,3 @@ pihole:
   helm install pihole mojo2600/pihole \
     --namespace pihole \
     --values pi-hole/pihole.values.yml
-
-
-mosquitto-prep:
-  kubectl create namespace mosquitto
-
-mosquitto:
-  kubectl apply --filename=mosquitto/ --namespace mosquitto
