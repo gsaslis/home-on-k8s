@@ -14,3 +14,8 @@ dashboard: dashboard-install dashboard-user
 
 nfs-install:
 	$(KCONF) kubectl apply -f nfs-subdir/
+
+pihole:
+  helm install pihole mojo2600/pihole \
+    --namespace pihole \
+    --values pi-hole/pihole.values.yml
