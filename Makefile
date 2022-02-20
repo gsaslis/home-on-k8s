@@ -11,6 +11,9 @@ dashboard-user:
 
 dashboard: dashboard-install dashboard-user
 
+home-assistant:
+	helm install homeassistant k8s-at-home/home-assistant --namespace homeassistant --values home-assistant/hass.values.yaml --create-namespace
+
 mosquitto-prep:
   kubectl create namespace mosquitto
 
