@@ -15,23 +15,23 @@ home-assistant:
 	helm install homeassistant k8s-at-home/home-assistant --namespace homeassistant --values home-assistant/hass.values.yaml --create-namespace
 
 mosquitto-prep:
-  kubectl create namespace mosquitto
+	kubectl create namespace mosquitto
 
 mosquitto:
-  kubectl apply --filename=mosquitto/ --namespace mosquitto
+	kubectl apply --filename=mosquitto/ --namespace mosquitto
 
 nextcloud:
-  kubectl create namespace nextcloud || true
-  kubectl apply --filename=nextcloud/postgres/ --namespace nextcloud
-  kubectl apply --filename=nextcloud/secret.yaml --namespace nextcloud
-  helm install nextcloud nextcloud/nextcloud \
-    --namespace nextcloud \
-    --values nextcloud/nextcloud.values.yml
+	kubectl create namespace nextcloud || true
+	kubectl apply --filename=nextcloud/postgres/ --namespace nextcloud
+	kubectl apply --filename=nextcloud/secret.yaml --namespace nextcloud
+	helm install nextcloud nextcloud/nextcloud \
+   		--namespace nextcloud \
+    	--values nextcloud/nextcloud.values.yml
 
 nfs-install:
 	$(KCONF) kubectl apply -f nfs-subdir/
 
 pihole:
-  helm install pihole mojo2600/pihole \
-    --namespace pihole \
-    --values pi-hole/pihole.values.yml
+	helm install pihole mojo2600/pihole \
+    	--namespace pihole \
+    	--values pi-hole/pihole.values.yml
