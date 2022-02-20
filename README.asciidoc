@@ -41,6 +41,10 @@ image::images/synology_nfs_setup.png[Options,600]
 
 //todo:
 
+=== Kubernetes dashboard
+
+//todo:
+
 === Pi-hole
 
 //todo:
