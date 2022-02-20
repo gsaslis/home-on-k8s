@@ -29,7 +29,7 @@ nextcloud:
     	--values nextcloud/nextcloud.values.yml
 
 nfs-install:
-	$(KCONF) kubectl apply -f nfs-subdir/
+	$(KCONF) kubectl apply --filename=nfs-subdir/ --recursive=false
 
 pihole:
 	helm install pihole mojo2600/pihole \

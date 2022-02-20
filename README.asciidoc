@@ -4,11 +4,22 @@ A Smart Home running on Kubernetes (for High Availability ... and fun! 🎉 )
 
 == Hardware
 
-//todo:
+I am using:
+
+* Raspberry Pi 4 (4gb)
+* Raspberry Pi 4 (8gb)
+* (more coming, when I can finally find more pi to buy)
 
 == Operating system
 
-//todo:
+Install Raspberry Pi OS (64bit Lite) using Raspberry Pi Imager
+
+[cols="1,1"]
+|===
+a| image::images/raspberry_pi_imager_options.png[Options,200]
+a| image::images/raspberry_pi_os_lite.png[64bit Lite,200]
+|===
+
 
 == Install K3s (lightweight Kubernetes)
 
@@ -16,7 +27,15 @@ A Smart Home running on Kubernetes (for High Availability ... and fun! 🎉 )
 
 == Setup Persistent Storage
 
-//todo:
+For persistent storage, I have:
+
+* Enabled NFS on my Synology NAS
+* Created a Shared Folder (called ... "Kubernetes"). All PersistentVolumes will be created in this folder.
+* Allowed access to this shared folder to be accessed by the cluster IPs (see screenshot below)
+
+image::images/synology_nfs_setup.png[Options,600]
+
+* Used the https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/tree/master/deploy[NFS subdir provisioner], which I have included in this repo. Install with `make nfs-install`.
 
 == Install Smart Home applications
 
