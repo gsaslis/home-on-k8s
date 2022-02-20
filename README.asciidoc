@@ -1,0 +1,35 @@
+= Smart Home on K8s
+
+A Smart Home running on Kubernetes (for High Availability ... and fun! 🎉 )
+
+== Hardware
+
+//todo:
+
+== Operating system
+
+//todo:
+
+== Install K3s (lightweight Kubernetes)
+
+//todo:
+
+== Setup Persistent Storage
+
+//todo:
+
+== Install Smart Home applications
+
+//todo:
+
+=== Pi-hole
+
+//todo:
+
+=== Nextcloud
+
+//todo:
+
+=== Mosquitto
+
+//todo:
