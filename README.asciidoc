@@ -8,51 +8,66 @@ I am using:
 
 * Raspberry Pi 4 (4gb)
 * Raspberry Pi 4 (8gb)
-* (more coming, when I can finally find more pi to buy)
+* (more coming, when I can finally find more `pi` to buy)
 
 == Operating system
 
-Install Raspberry Pi OS (64bit Lite) using Raspberry Pi Imager
+=== Raspbian, with passwordless SSH access
 
+1. Burn Raspbian Bullseye on an SD card, as per: https://www.raspberrypi.com/software/
++
 [cols="1,1"]
 |===
 a| image::images/raspberry_pi_imager_options.png[Options,200]
 a| image::images/raspberry_pi_os_lite.png[64bit Lite,200]
 |===
 
+1. Create an empty file called `ssh` on the root folder of the SD card. This enables SSH, which is crucial if you don't have your raspberry pi connected to a screen. Default username: `pi`, default pass: `raspberry`.
+1. Run `sudo raspi-config` to connect your PI to the wifi, if not connected by Ethernet. Also change the default password.
+1. Enable passwordless ssh, by copying your public key to the raspberry pi's `~/.ssh/authorized_keys` file. For convenience, you can also use `ssh-copy-id -i $PATH_TO_KEY pi@$PI_IP_ADDRESS`
+1. Ensure you have added the key to your agent with `ssh-add -K $PATH_TO_KEY`. Now try to connect via SSH and ensure you don't get a password prompt.
+
+
 
 == Install K3s (lightweight Kubernetes)
 
 //todo:
 
-== Setup Persistent Storage
+Once you have everything ready, it's time to start deploying stuff on our [.line-through]#Kubernetes# K3s cluster!!
+
+But we need a bit more setup first: a Dashboard, to have a web-based UI, and the NFS provisioner, so that we can have some persistent storage.
+
+
+=== Setup Persistent Storage
 
 For persistent storage, I have:
 
-* Enabled NFS on my Synology NAS
-* Created a Shared Folder (called ... "Kubernetes"). All PersistentVolumes will be created in this folder.
-* Allowed access to this shared folder to be accessed by the cluster IPs (see screenshot below)
-
+1. Enable NFS on the Synology NAS: `Control Panel -> File Services -> NFS`
+1. Created a Shared Folder (called ... "Kubernetes"). All PersistentVolumes will be created in this folder.
+1. Allowed access to this shared folder to be accessed by the cluster IPs (see screenshot below)
++
 image::images/synology_nfs_setup.png[Options,600]
 
-* Used the https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/tree/master/deploy[NFS subdir provisioner], which I have included in this repo. Install with `make nfs-install`.
+1. Used the https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/tree/master/deploy[NFS subdir provisioner], which I have included in this repo. Install with `make nfs-install`.
+
+
+=== Kubernetes dashboard
+
+`make dashboard`
+
 
 == Install Smart Home applications
 
 //todo:
 
-=== Kubernetes dashboard
-
-//todo:
-
 === Pi-hole
 
-//todo:
+`make pihole`
 
 === Nextcloud
 
-//todo:
+`make nextcloud`
 
 === Mosquitto
 
-//todo:
+`make mosquitto`

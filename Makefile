@@ -18,12 +18,9 @@ dashboard: dashboard-install dashboard-user
 home-assistant:
 	helm install homeassistant k8s-at-home/home-assistant --namespace homeassistant --values home-assistant/hass.values.yaml --create-namespace
 
-.PHONY: mosquitto-prep
-mosquitto-prep:
-	kubectl create namespace mosquitto
-
 .PHONY: mosquitto
 mosquitto:
+	kubectl create namespace mosquitto || true
 	kubectl apply --filename=mosquitto/ --namespace mosquitto
 
 .PHONY: nextcloud
