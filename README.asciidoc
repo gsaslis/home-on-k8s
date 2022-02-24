@@ -73,10 +73,14 @@ image::images/synology_nfs_setup.png[Options,600]
 
 `make pihole`
 
-=== Nextcloud
-
-`make nextcloud`
-
 === Mosquitto
 
 `make mosquitto`
+
+=== Home-Assistant
+
+`make home-assistant`
+
+=== Nextcloud
+
+`make nextcloud`
