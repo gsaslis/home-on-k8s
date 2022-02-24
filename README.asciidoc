@@ -8,6 +8,7 @@ I am using:
 
 * Raspberry Pi 4 (4gb)
 * Raspberry Pi 4 (8gb)
+* Raspberry Pi 3 (1gb)
 * (more coming, when I can finally find more `pi` to buy)
 
 == Operating system
@@ -31,7 +32,15 @@ a| image::images/raspberry_pi_os_lite.png[64bit Lite,200]
 
 == Install K3s (lightweight Kubernetes)
 
-//todo:
+I was looking for an Ansible playbook that supports an HA setup of K3s, so that the applications we deploy can actually tolerate hardware failures of the individual Raspberry Pi nodes.
+
+The biggest choice with regards to the HA setup is whether you will use an external database, or you will go with the newer option of an embedded etcd cluster.
+
+Considering I didn't have any other HA database at home, I went for the simplest - in terms of initial setup - option: the embedded etcd cluster.
+
+The `k3s-install` Makefile target will point you to the ansible playbook used.
+
+
 
 Once you have everything ready, it's time to start deploying stuff on our [.line-through]#Kubernetes# K3s cluster!!
 

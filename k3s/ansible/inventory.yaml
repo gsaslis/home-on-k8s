@@ -1,0 +1,23 @@
+---
+
+k3s_cluster:
+  hosts:
+    node-1:
+      ansible_user: pi
+      ansible_host: node1.k3s.yorgos.net.gr
+      ansible_python_interpreter: /usr/bin/python3
+      k3s_control_node: true
+      k3s_become: true
+    node-2:
+      ansible_user: pi
+      ansible_host: node2.k3s.yorgos.net.gr
+      ansible_python_interpreter: /usr/bin/python3
+      k3s_control_node: true
+      k3s_become: true
+    node-3:
+      ansible_user: pi
+      ansible_host: node3.k3s.yorgos.net.gr
+      ansible_python_interpreter: /usr/bin/python3
+      k3s_control_node: true
+      k3s_become: true
+      k3s_install_hard_links: false
