@@ -20,7 +20,10 @@ dashboard: dashboard-install dashboard-user
 
 .PHONY: home-assistant
 home-assistant:
-	helm install homeassistant k8s-at-home/home-assistant --namespace homeassistant --values home-assistant/hass.values.yaml --create-namespace
+	helm install homeassistant k8s-at-home/home-assistant \
+		--namespace homeassistant \
+		--create-namespace \
+		--values home-assistant/hass.values.yaml
 
 .PHONY: mosquitto
 mosquitto:
