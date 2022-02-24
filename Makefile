@@ -4,16 +4,16 @@ VERSION_KUBE_DASHBOARD=`curl -w '%{url_effective}' -I -L -s -S $(GITHUB_URL)/lat
 
 .PHONY: k3s-install
 k3s-install:
-	ansible-playbook -i k3s/ansible/inventory.yaml k3s/ansible/ha_cluster.yaml
+	ansible-playbook --inventory k3s/ansible/inventory.yaml k3s/ansible/ha_cluster.yaml
 
 .PHONY: dashboard-install
 dashboard-install:
 	echo $(VERSION_KUBE_DASHBOARD)
-	$(KCONF) kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/$(VERSION_KUBE_DASHBOARD)/aio/deploy/recommended.yaml
+	$(KCONF) kubectl create --filename=https://raw.githubusercontent.com/kubernetes/dashboard/$(VERSION_KUBE_DASHBOARD)/aio/deploy/recommended.yaml
 
 .PHONY: dashboard-user
 dashboard-user:
-	$(KCONF) kubectl create -f dashboard/
+	$(KCONF) kubectl apply --filename=dashboard/
 
 .PHONY: dashboard
 dashboard: dashboard-install dashboard-user
