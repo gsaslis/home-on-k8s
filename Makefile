@@ -13,7 +13,7 @@ dashboard-install:
 
 .PHONY: dashboard-user
 dashboard-user:
-	$(KCONF) kubectl apply --filename=dashboard/
+	$(KCONF) kubectl apply --filename=dashboard/ --namespace kubernetes-dashboard
 
 .PHONY: dashboard
 dashboard: dashboard-install dashboard-user
