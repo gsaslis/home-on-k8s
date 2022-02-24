@@ -44,4 +44,5 @@ nfs-install:
 pihole:
 	helm install pihole mojo2600/pihole \
     	--namespace pihole \
+    	--create-namespace \
     	--values pi-hole/pihole.values.yml
