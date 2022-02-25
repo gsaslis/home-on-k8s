@@ -41,6 +41,12 @@ Considering I didn't have any other HA database at home, I went for the simplest
 
 The `k3s-install` Makefile target will point you to the ansible playbook used.
 
+After the playbook is finished and everything has gone well, you should see:
+[cols="1,1"]
+|===
+a| image::images/playbook_success.png[Options,400]
+a| image::images/k3s_cluster_nodes.png[64bit Lite,400]
+|===
 
 
 Once you have everything ready, it's time to start deploying stuff on our [.line-through]#Kubernetes# K3s cluster!!
