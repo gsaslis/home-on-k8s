@@ -9,7 +9,8 @@ I am using:
 * Raspberry Pi 4 (4gb)
 * Raspberry Pi 4 (8gb)
 * Raspberry Pi 3 (1gb)
-* (more coming, when I can finally find more `pi` to buy)
+** (more raspberries coming, when I can finally find more `pi` to buy)
+* 3 x https://www.amazon.com/SanDisk-Endurance-microSDXC-Adapter-Monitoring/dp/B07NY23WBG[SanDisk High Endurance 128GB SD cards]
 
 == Operating system
 
@@ -34,7 +35,7 @@ a| image::images/raspberry_pi_os_lite.png[64bit Lite,200]
 
 I was looking for an Ansible playbook that supports an HA setup of K3s, so that the applications we deploy can actually tolerate hardware failures of the individual Raspberry Pi nodes.
 
-The biggest choice with regards to the HA setup is whether you will use an external database, or you will go with the newer option of an embedded etcd cluster.
+The biggest choice with regards to the HA setup is whether you will use an external database, or you will go with the newer option of an https://rancher.com/docs/k3s/latest/en/installation/ha-embedded/[embedded etcd cluster].
 
 Considering I didn't have any other HA database at home, I went for the simplest - in terms of initial setup - option: the embedded etcd cluster.
 
@@ -64,10 +65,14 @@ image::images/synology_nfs_setup.png[Options,600]
 
 `make dashboard`
 
+//todo document kubectl patch on traefik, with `--serversTransport.insecureSkipVerify=true` that allows to expose k8s dashboard
+
 
 == Install Smart Home applications
 
-//todo:
+With all that out of the way...
+
+It's finally(!!) time to start making our home smarter!!! 🎉 🥳 🚀
 
 === Pi-hole
 
