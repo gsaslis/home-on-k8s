@@ -82,6 +82,21 @@ It's finally(!!) time to start making our home smarter!!! 🎉 🥳 🚀
 
 === Pi-hole
 
+You will need to create a secret in the `pihole` namespace (create it if it doesn't exist):
+
+```yaml
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pihole-secret
+type: Opaque
+stringData:
+  password: some-super-secure-pass-for-your-pihole-web-ui
+```
+
+Once the secret has been created, you can:
+
 `make pihole`
 
 === Mosquitto
@@ -93,5 +108,36 @@ It's finally(!!) time to start making our home smarter!!! 🎉 🥳 🚀
 `make home-assistant`
 
 === Nextcloud
+
+For nextcloud, you will need to create 2 kubernetes secrets:
+
+```yaml
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: nextcloud-postgres-secrets
+  labels:
+    app: nextcloud-postgres
+type: Opaque
+stringData:
+  POSTGRES_PASSWORD: "your postgres password"
+  nextcloud-db-user: nextcloud
+  nextcloud-db-password: "your nextcloud user db password"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: nextcloud-secrets
+type: Opaque
+stringData:
+  nextcloud-db-user: nextcloud
+  nextcloud-db-password: "your nextcloud user db password"
+  nextcloud-user: admin
+  nextcloud-password: "some super secure pass for your admin user"
+
+```
+
+After you have created these 2 secrets (e.g. with `kubectl apply` ), in the `nextcloud` namespace, you can go ahead and run:
 
 `make nextcloud`
