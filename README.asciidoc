@@ -41,7 +41,19 @@ Considering I didn't have any other HA database at home, I went for the simplest
 
 The `k3s-install` Makefile target will point you to the ansible playbook used.
 
-After the playbook is finished and everything has gone well, you should see:
+=== Access your shiny new cluster
+
+After the playbook is finished and everything has gone well, you need to access the cluster.
+
+You can ssh into one of your PIs and copy the contents of `/etc/rancher/k3s/k3s.yaml`.
+
+Paste the contents of this file into e.g. `~/.kube/k8spi` and use that as your KUBECONFIG file. Make sure to edit `127.0.0.1` or `localhost` in that file and replace it with the IP of your `control_plane` node.
+
+```bash=
+export KUBECONFIG=~/.kube/k8spi
+```
+
+Then, you should see:
 [cols="1,1"]
 |===
 a| image::images/playbook_success.png[Options,400]
