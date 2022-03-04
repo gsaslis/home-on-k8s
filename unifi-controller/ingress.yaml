@@ -17,3 +17,23 @@ spec:
               name: unifi-controller
               port:
                 name: https-web
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: unifi-inform
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  rules:
+  - host: unifi.k3s.yorgos.net.gr
+    http:
+      paths:
+        - path: /inform
+          pathType: Exact
+          backend:
+            service:
+              name: unifi-controller
+              port:
+                number: 8080
+
