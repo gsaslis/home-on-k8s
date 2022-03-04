@@ -1,6 +1,6 @@
 = Smart Home on K8s
-
 A Smart Home running on Kubernetes (for High Availability ... and fun! 🎉 )
+:toc:
 
 == Hardware
 
@@ -25,7 +25,7 @@ a| image::images/raspberry_pi_os_lite.png[64bit Lite,200]
 |===
 
 1. Create an empty file called `ssh` on the root folder of the SD card. This enables SSH, which is crucial if you don't have your raspberry pi connected to a screen. Default username: `pi`, default pass: `raspberry`.
-1. Run `sudo raspi-config` to connect your PI to the wifi, if not connected by Ethernet. Also change the default password.
+1. Run `sudo raspi-config` to connect your PI to the Wi-Fi, if not connected by Ethernet. Also change the default password.
 1. Enable passwordless ssh, by copying your public key to the raspberry pi's `~/.ssh/authorized_keys` file. For convenience, you can also use `ssh-copy-id -i $PATH_TO_KEY pi@$PI_IP_ADDRESS`
 1. Ensure you have added the key to your agent with `ssh-add -K $PATH_TO_KEY`. Now try to connect via SSH and ensure you don't get a password prompt.
 
@@ -35,7 +35,7 @@ a| image::images/raspberry_pi_os_lite.png[64bit Lite,200]
 
 I was looking for an Ansible playbook that supports an HA setup of K3s, so that the applications we deploy can actually tolerate hardware failures of the individual Raspberry Pi nodes.
 
-The biggest choice with regards to the HA setup is whether you will use an external database, or you will go with the newer option of an https://rancher.com/docs/k3s/latest/en/installation/ha-embedded/[embedded etcd cluster].
+The biggest choice regarding the HA setup is whether you will use an external database, or you will go with the newer option of an https://rancher.com/docs/k3s/latest/en/installation/ha-embedded/[embedded etcd cluster].
 
 Considering I didn't have any other HA database at home, I went for the simplest - in terms of initial setup - option: the embedded etcd cluster.
 
@@ -49,9 +49,10 @@ You can ssh into one of your PIs and copy the contents of `/etc/rancher/k3s/k3s.
 
 Paste the contents of this file into e.g. `~/.kube/k8spi` and use that as your KUBECONFIG file. Make sure to edit `127.0.0.1` or `localhost` in that file and replace it with the IP of your `control_plane` node.
 
-```bash=
+[source,bash=]
+----
 export KUBECONFIG=~/.kube/k8spi
-```
+----
 
 Then, you should see:
 [cols="1,1"]
@@ -92,11 +93,21 @@ With all that out of the way...
 
 It's finally(!!) time to start making our home smarter!!! 🎉 🥳 🚀
 
+
+**BUT BEFORE YOU START!!!**
+
+=== DNS Config
+
+In my manifests, you will find that I am using `*.k3s.yorgos.net.gr` domains, to expose services running within the K3s cluster.
+
+In order for that to work, you need to set your corresponding wildcard domain
+
 === Pi-hole
 
 You will need to create a secret in the `pihole` namespace (create it if it doesn't exist):
 
-```yaml
+[source,yaml]
+----
 ---
 apiVersion: v1
 kind: Secret
@@ -105,7 +116,7 @@ metadata:
 type: Opaque
 stringData:
   password: some-super-secure-pass-for-your-pihole-web-ui
-```
+----
 
 Once the secret has been created, you can:
 
@@ -123,7 +134,8 @@ Once the secret has been created, you can:
 
 For nextcloud, you will need to create 2 kubernetes secrets:
 
-```yaml
+[source,yaml]
+----
 ---
 apiVersion: v1
 kind: Secret
@@ -148,7 +160,7 @@ stringData:
   nextcloud-user: admin
   nextcloud-password: "some super secure pass for your admin user"
 
-```
+----
 
 After you have created these 2 secrets (e.g. with `kubectl apply` ), in the `nextcloud` namespace, you can go ahead and run:
 
