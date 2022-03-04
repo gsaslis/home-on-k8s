@@ -28,7 +28,7 @@ spec:
     - name: "8081"
       port: 8081
       targetPort: 8081
-    - name: "8443"
+    - name: "https-web"
       port: 8443
       targetPort: 8443
     - name: "8843"
