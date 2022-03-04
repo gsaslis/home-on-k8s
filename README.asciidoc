@@ -153,3 +153,16 @@ stringData:
 After you have created these 2 secrets (e.g. with `kubectl apply` ), in the `nextcloud` namespace, you can go ahead and run:
 
 `make nextcloud`
+
+
+=== Unifi Controller
+
+After first buying the Unifi equipment, I ran the Unifi Controller on my laptop. But that wasn't convenient because there were times I wanted to check my network configuration when I wasn't at my laptop.
+
+Then I moved it to my NAS, running on Docker Compose. But that wasn't great because the Unifi controller is quite demanding in terms of resources and (I think!!) it caused my NAS to hang a couple of times < --- *not* good!!
+
+So, finally, I decided to migrate it to the k3s cluster, for greater reliability.
+
+To deploy it, just:
+
+`make unifi-controller`

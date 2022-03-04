@@ -49,3 +49,8 @@ pihole:
     	--namespace pihole \
     	--create-namespace \
     	--values pi-hole/pihole.values.yml
+
+.PHONY: unifi-controller
+unifi-controller:
+	kubectl create namespace unifi || true
+	kubectl apply --filename=unifi-controller/ --namespace unifi
