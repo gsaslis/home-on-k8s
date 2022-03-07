@@ -101,9 +101,25 @@ It's finally(!!) time to start making our home smarter!!! 🎉 🥳 🚀
 
 In my manifests, you will find that I am using `*.k3s.yorgos.net.gr` domains, to expose services running within the K3s cluster.
 
-In order for that to work, you need to set your corresponding wildcard domain
+In order for that to work, you need to add `A` records for your corresponding wildcard domain. I have 3 k3s cluster nodes, so I added 3 `A` records - one for each **[.underline]#local#** IP address.
+
+image::images/dns_records.png[Options,600]
 
 === Pi-hole
+
+Pi-hole is a network-based ad-blocking piece of software. It is also a custom DNS server (more on this in a bit).
+
+I deploy pi-hole because I can't run uBlock Origin on every browser of every device (not all of them are controlled by me 😅), so having a way to block ads on the network level is 🎉!
+
+It uses https://en.wikipedia.org/wiki/DNS_sinkhole[DNS sinkholing] and blocklists as a way of stopping internet ads, malware, malvertising, etc.
+
+Apart from the ad-blocking functionality, running a local DNS server helps me with one more thing: DNS resolution on Internet-blocked devices.
+
+As you may have noticed, I use public DNS entries to map to local IP addresses: e.g. all my apps are deployed under `*.k3s.yorgos.net.gr`.
+
+Then, I need my devices (shelly/sonoff plugs, switches, etc. etc.) to be able to connect to these apps - for example, all my switches need to connect to the MQTT server (mosquitto). BUT - **I block internet access on all these devices on my router**! So, without a local DNS server, I would need to use a single IP address for my MQTT server and somehow ensure that a load balancer runs in High-Availability behind that IP address.
+
+Instead of doing that, I can add 2 `A` records for `mosquitto.k3s.yorgos.net.gr`, for IP addresses `192.168.100.180` and `192.168.100.181` and my smart home setup will survive outages of one of the two nodes !! (I only run a single instance of mosquitto, but kubernetes will ensure it always runs on one of these two nodes and this way the clients will always find and connect to it!)
 
 You will need to create a secret in the `pihole` namespace (create it if it doesn't exist):
 
