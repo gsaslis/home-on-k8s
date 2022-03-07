@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: shairport-sync
+  labels:
+    app: shairport-sync
+spec:
+  selector:
+    matchLabels:
+      app: shairport-sync
+  template:
+    metadata:
+      labels:
+        app: shairport-sync
+    spec:
+      hostNetwork: true
+      nodeSelector:
+        app: audio
+      containers:
+        - name: shairport-sync
+          image: mikebrady/shairport-sync
+          securityContext:
+            privileged: true
+          volumeMounts:
+          - name: shairport-config-volume
+            subPath: shairport-sync.conf
+            mountPath: /etc/shairport-sync.conf
+          - name: snd-dir
+            mountPath: /dev/snd
+          - name: tmp-dir
+            mountPath: /tmp
+      volumes:
+        - name: shairport-config-volume
+          configMap:
+            name: shairport-config
+            # An array of keys from the ConfigMap to create as files
+            items:
+            - key: "shairport-sync.conf"
+              path: "shairport-sync.conf"
+        - name: snd-dir
+          hostPath:
+            path: /dev/snd
+        - name: tmp-dir
+          hostPath:
+            path: /tmp

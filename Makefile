@@ -50,6 +50,12 @@ pihole:
     	--create-namespace \
     	--values pi-hole/pihole.values.yml
 
+
+.PHONY: shairport-sync
+shairport-sync:
+	kubectl create namespace shairport-sync || true
+	kubectl apply --filename=shairport-sync/ --namespace shairport-sync
+
 .PHONY: unifi-controller
 unifi-controller:
 	kubectl create namespace unifi || true

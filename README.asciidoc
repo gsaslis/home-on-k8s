@@ -195,3 +195,27 @@ So, finally, I decided to migrate it to the k3s cluster, for greater reliability
 To deploy it, just:
 
 `make unifi-controller`
+
+=== Shairport-Sync (Airplay)
+
+Shairport-Sync is a great Airplay 1 emulator. I use it reliably (for a number of years), to turn an old set of roof speakers in my living room, into a "smart speaker", that I can stream music to **over WiFi** (not bluetooth).
+
+In terms of deploying shairport-sync, the thing to be aware of is that **we clearly only want it to run on a single raspberry** of our raspberry pi cluster - the one that is actually connected to the speakers!
+
+We can achieve that with the following combination:
+
+Add a label to the node:
+
+[source,bash]
+----
+$ kubectl label nodes node3-k3s app=audio
+node/node3-k3s labeled
+----
+
+Instruct the app to be deployed on the node with that label:
+
+[source,yaml]
+----
+nodeSelector:
+  app: audio
+----
