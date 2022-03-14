@@ -338,10 +338,10 @@ ftl: {}
   # MAXDBDAYS: 14
 
 # -- port the container should use to expose HTTP traffic
-webHttp: "8081"
+webHttp: "8881"
 
 # -- port the container should use to expose HTTPS traffic
-webHttps: "8443"
+webHttps: "8483"
 
 # -- hostname of pod
 hostname: ""

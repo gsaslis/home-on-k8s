@@ -12,10 +12,10 @@ spec:
       app: unifi-controller
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: unifi-controller
     spec:
+      hostNetwork: true
       containers:
         - env:
             - name: MEM_LIMIT
