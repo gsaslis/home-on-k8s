@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfs-client-provisioner-fast
+  labels:
+    app: nfs-client-provisioner-fast
+  # replace with namespace where provisioner is deployed
+  namespace: default
+spec:
+  replicas: 2
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nfs-client-provisioner-fast
+  template:
+    metadata:
+      labels:
+        app: nfs-client-provisioner-fast
+    spec:
+      serviceAccountName: nfs-client-provisioner
+      containers:
+        - name: nfs-client-provisioner
+          image: k8s.gcr.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
+          volumeMounts:
+            - name: nfs-client-root
+              mountPath: /persistentvolumes
+          env:
+            - name: PROVISIONER_NAME
+              value: k8s-sigs.io/nfs-subdir-external-provisioner-fast
+            - name: NFS_SERVER
+              value: 192.168.100.23
+            - name: NFS_PATH
+              value: /volume1/kubernetes-fast
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - nfs-client-provisioner-fast
+              topologyKey: "kubernetes.io/hostname"
+      volumes:
+        - name: nfs-client-root
+          nfs:
+            server: 192.168.100.23
+            path: /volume1/kubernetes-fast

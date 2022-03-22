@@ -41,7 +41,9 @@ nextcloud:
 
 .PHONY: nfs-install
 nfs-install:
-	$(KCONF) kubectl apply --filename=nfs-subdir/ --recursive=false
+	$(KCONF) kubectl apply --filename=nfs-subdir/rbac.yaml
+	$(KCONF) kubectl apply --filename=nfs-subdir/standard/
+	$(KCONF) kubectl apply --filename=nfs-subdir/fast/
 
 .PHONY: pihole
 pihole:

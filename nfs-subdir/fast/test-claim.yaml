@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: test-claim-fast
+spec:
+  storageClassName: managed-nfs-storage-fast
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Mi
