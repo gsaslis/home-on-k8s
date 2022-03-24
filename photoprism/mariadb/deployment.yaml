@@ -1,0 +1,58 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: photoprism-mariadb
+spec:
+  selector:
+    matchLabels:
+      app: mariadb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+      - image: arm64v8/mariadb:10.7
+        name: mariadb
+        args:
+          - --lower-case-table-names=1
+          - --transaction-isolation=READ-COMMITTED
+          - --character-set-server=utf8mb4
+          - --collation-server=utf8mb4_unicode_ci
+          - --max-connections=512
+          - --innodb-rollback-on-timeout=OFF
+          - --innodb-lock-wait-timeout=120
+          - --innodb-buffer-pool-size=1G
+          - --innodb_log_file_size=256M
+        envFrom:
+          - secretRef:
+              name: photoprism-mariadb-secrets
+        env:
+          - name: MARIADB_DATABASE
+            value: photoprism
+          - name: MARIADB_USER
+            value: photoprism
+
+        resources:
+          limits:
+            memory: 2Gi
+          requests:
+            memory: 1Gi
+
+        ports:
+          - containerPort: 3306
+            name: mariadb
+        volumeMounts:
+          - name: mariadb-persistent-volume
+            mountPath: /var/lib/mysql
+      volumes:
+        - name: mariadb-persistent-volume
+          persistentVolumeClaim:
+            claimName: mariadb-persistent-storage
+
+#    security_opt:
+#      - seccomp:unconfined
+#      - apparmor:unconfined

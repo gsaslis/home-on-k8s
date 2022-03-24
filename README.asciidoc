@@ -183,6 +183,42 @@ After you have created these 2 secrets (e.g. with `kubectl apply` ), in the `nex
 
 `make nextcloud`
 
+=== Photoprism
+
+Photoprism has become my "Google Photos" / "Apple Photos" **privacy-friendly** alternative solution.
+
+First, you will need to create 2 kubernetes secrets. One for photoprism and one for mariadb - the backing database:
+
+[source,yaml]
+----
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: photoprism-mariadb-secrets
+  namespace: databases
+stringData:
+  MARIADB_ROOT_PASSWORD: "some super clever root password"
+  MARIADB_PASSWORD: "yet another password you shouldn't upload to github"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: photoprism-secrets
+  namespace: photoprism
+stringData:
+  PHOTOPRISM_DATABASE_DRIVER: "mysql"            # use MariaDB 10.5+ or MySQL 8+ instead of SQLite for improved performance
+  PHOTOPRISM_DATABASE_SERVER: "photoprism-db:3306"     # MariaDB or MySQL database server (hostname:port)
+  PHOTOPRISM_DATABASE_NAME: "photoprism"         # MariaDB or MySQL database schema name
+  PHOTOPRISM_DATABASE_USER: "photoprism"         # MariaDB or MySQL database user name
+  PHOTOPRISM_DATABASE_PASSWORD: "this should match with MARIADB_PASSWORD"       # MariaDB or MySQL database user password
+  PHOTOPRISM_ADMIN_PASSWORD: "bla bla bla"
+----
+
+After you have created these 2 secrets (e.g. with `kubectl apply` ), you can go ahead and run:
+
+`make mariadb photoprism`
+
 
 === Unifi Controller
 

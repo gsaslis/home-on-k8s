@@ -1,0 +1,117 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: photoprism
+spec:
+  selector:
+    matchLabels:
+      app: photoprism
+  serviceName: photoprism
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: photoprism
+    spec:
+      containers:
+        - name: photoprism
+          image: photoprism/photoprism:latest
+          env:
+#            - name: PHOTOPRISM_DEBUG
+#              value: "true"
+            - name: PHOTOPRISM_STORAGE_PATH
+              value: /assets/storage
+            - name: PHOTOPRISM_IMPORT_PATH
+              value: /assets/photos/import
+            - name: PHOTOPRISM_EXPORT_PATH
+              value: /assets/photos/export
+            - name: PHOTOPRISM_ORIGINALS_PATH
+              value: /assets/photos/originals
+            - name: PHOTOPRISM_HTTP_HOST
+              value: 0.0.0.0
+            - name: PHOTOPRISM_HTTP_PORT
+              value: "2342"
+            - name: PHOTOPRISM_SITE_URL
+              value: "https://photoprism.k3s.yorgos.net.gr/"  # public server URL incl http:// or https:// and /path, :port is optional
+            - name: PHOTOPRISM_ORIGINALS_LIMIT
+              value: "5000"               # file size limit for originals in MB (increase for high-res video)
+            - name: PHOTOPRISM_HTTP_COMPRESSION
+              value: "gzip"            # improves transfer speed and bandwidth utilization (none or gzip)
+            - name: PHOTOPRISM_DEBUG
+              value: "false"                      # run in debug mode (shows additional log messages)
+            - name: PHOTOPRISM_PUBLIC
+              value: "false"                     # no authentication required (disables password protection)
+            - name: PHOTOPRISM_READONLY
+              value: "false"                   # don't modify originals directory (reduced functionality)
+            - name: PHOTOPRISM_EXPERIMENTAL
+              value: "false"               # enables experimental features
+            - name: PHOTOPRISM_DISABLE_CHOWN
+              value: "false"              # disables storage permission updates on startup
+            - name: PHOTOPRISM_DISABLE_WEBDAV
+              value: "false"             # disables built-in WebDAV server
+            - name: PHOTOPRISM_DISABLE_SETTINGS
+              value: "false"           # disables Settings in Web UI
+            - name: PHOTOPRISM_DISABLE_TENSORFLOW
+              value: "false"         # disables all features depending on TensorFlow
+            - name: PHOTOPRISM_DISABLE_FACES
+              value: "false"              # disables facial recognition
+            - name: PHOTOPRISM_DISABLE_CLASSIFICATION
+              value: "false"     # disables image classification
+            - name: PHOTOPRISM_DARKTABLE_PRESETS
+              value: "false"          # enables Darktable presets and disables concurrent RAW conversion
+            - name: PHOTOPRISM_DETECT_NSFW
+              value: "false"                # flag photos as private that MAY be offensive (requires TensorFlow)
+            - name: PHOTOPRISM_UPLOAD_NSFW
+              value: "true"                 # allows uploads that MAY be offensive
+            - name: PHOTOPRISM_SITE_TITLE
+              value: "Memories"
+            - name: PHOTOPRISM_SITE_CAPTION
+              value: "Our Lives' Memories"
+            - name: PHOTOPRISM_SITE_DESCRIPTION
+              value: ""
+            - name: PHOTOPRISM_SITE_AUTHOR
+              value: ""
+            - name: PHOTOPRISM_WORKERS
+              value: "1"
+#            - name: PHOTOPRISM_INIT
+#              value: "gpu tensorflow" ## Run/install on first startup (options: update, gpu, tensorflow, davfs, nano, clean):
+#            - name: HOME
+#              value: "/photoprism"
+
+
+          # Load database DSN & admin password from secret
+          envFrom:
+            - secretRef:
+                name: photoprism-secrets
+                optional: false
+          ports:
+            - containerPort: 2342
+              name: http
+          volumeMounts:
+            - mountPath: /assets/photos/originals
+              name: originals
+            - mountPath: /assets/storage
+              name: photoprism
+              subPath: storage
+            - mountPath: /assets/photos/import
+              name: photoprism
+              subPath: import
+            - mountPath: /assets/photos/export
+              name: photoprism
+              subPath: export
+          resources:
+            requests:
+              cpu: "1"
+              memory: "2Gi"
+          readinessProbe:
+            httpGet:
+              path: /api/v1/status
+              port: http
+      volumes:
+        - name: originals
+          persistentVolumeClaim:
+            claimName: photoprism-originals
+        - name: photoprism
+          persistentVolumeClaim:
+            claimName: photoprism-storage

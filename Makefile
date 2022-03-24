@@ -30,6 +30,12 @@ mosquitto:
 	kubectl create namespace mosquitto || true
 	kubectl apply --filename=mosquitto/ --namespace mosquitto
 
+.PHONY: mariadb
+mariadb:
+	$(KCONF) kubectl create namespace databases || true
+	$(KCONF) kubectl apply --filename=photoprism/mariadb/storage/ --namespace databases
+	$(KCONF) kubectl apply --filename=photoprism/mariadb/ --namespace databases
+
 .PHONY: nextcloud
 nextcloud:
 	kubectl create namespace nextcloud || true
@@ -44,6 +50,13 @@ nfs-install:
 	$(KCONF) kubectl apply --filename=nfs-subdir/rbac.yaml
 	$(KCONF) kubectl apply --filename=nfs-subdir/standard/
 	$(KCONF) kubectl apply --filename=nfs-subdir/fast/
+
+
+.PHONY: photoprism
+photoprism:
+	$(KCONF) kubectl create namespace photoprism || true
+	$(KCONF) kubectl apply --filename=photoprism/storage/ --namespace photoprism
+	$(KCONF) kubectl apply --filename=photoprism/ --namespace photoprism
 
 .PHONY: pihole
 pihole:
