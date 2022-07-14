@@ -27,8 +27,8 @@ home-assistant:
 
 .PHONY: mosquitto
 mosquitto:
-	kubectl create namespace mosquitto || true
-	kubectl apply --filename=mosquitto/ --namespace mosquitto
+	$(KCONF) kubectl create namespace mosquitto || true
+	$(KCONF) kubectl apply --filename=mosquitto/ --namespace mosquitto
 
 .PHONY: mariadb
 mariadb:
@@ -38,9 +38,9 @@ mariadb:
 
 .PHONY: nextcloud
 nextcloud:
-	kubectl create namespace nextcloud || true
-	kubectl apply --filename=nextcloud/postgres/ --namespace nextcloud
-	kubectl apply --filename=nextcloud/secret.yaml --namespace nextcloud
+	$(KCONF) kubectl create namespace nextcloud || true
+	$(KCONF) kubectl apply --filename=nextcloud/postgres/ --namespace nextcloud
+	$(KCONF) kubectl apply --filename=nextcloud/secret.yaml --namespace nextcloud
 	helm install nextcloud nextcloud/nextcloud \
    		--namespace nextcloud \
     	--values nextcloud/nextcloud.values.yml
@@ -68,10 +68,10 @@ pihole:
 
 .PHONY: shairport-sync
 shairport-sync:
-	kubectl create namespace shairport-sync || true
-	kubectl apply --filename=shairport-sync/ --namespace shairport-sync
+	$(KCONF) kubectl create namespace shairport-sync || true
+	$(KCONF) kubectl apply --filename=shairport-sync/ --namespace shairport-sync
 
 .PHONY: unifi-controller
 unifi-controller:
-	kubectl create namespace unifi || true
-	kubectl apply --filename=unifi-controller/ --namespace unifi
+	$(KCONF) kubectl create namespace unifi || true
+	$(KCONF) kubectl apply --filename=unifi-controller/ --namespace unifi
