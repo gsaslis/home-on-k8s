@@ -255,3 +255,46 @@ Instruct the app to be deployed on the node with that label:
 nodeSelector:
   app: audio
 ----
+
+
+=== HTTPS / TLS (with cert-manager and LetsEncrypt)
+
+Choosing LetsEncrypt for non-self-signed (and non-paid-for) certificates
+comes with one caveat: we cannot use the `http01` solver, because we don't
+have any public endpoints that letsencrypt can verify the text on. We *can*, however, use the `dns01` solver - with an additional dependency
+on Cloudflare (where my `yorgos.net.gr` domain is set up). cert-manager
+will use a secret API key to contact Cloudflare, and instruct it to set up
+the domains accordingly, in order to prove ownership to LetsEncrypt and
+allow the certificates to be issued correctly.
+
+With that in mind, all the resources required are in the `cert-manager/`
+folder.
+
+We use:
+
+* the helm chart to deploy `cert-manager`
+* a letsencrypt *staging* ClusterIssuer, for our tests. LetsEncrypt applies
+rate limiting and it's easy to go over during initial tests. Use
+`letsencrypt-staging` for all your tests and then switch your ingress to
+`letsencrypt-prod` once everything is fully working.
+* a traefik `middleware` to always redirect to HTTPS
+* a k8s *secret* to hold the Cloudflare "Global API Key" - do NOT use "API tokens" or the "Origin CA Key", like the one below:
+
+[source,yaml]
+----
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloudflare-api-key-secret
+type: Opaque
+stringData:
+#  Cloudflare "Global API Key" - do NOT use "API tokens" or the "Origin CA Key"
+  api-key: <your_api_key_here>
+
+----
+
+
+After you have added this secret (with the correct value) in the `cert-manager` folder, you should just need to invoke:
+
+`make cert-manager`
