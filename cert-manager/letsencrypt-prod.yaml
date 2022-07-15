@@ -1,0 +1,30 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    email: yorgo@protonmail.com
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    server: https://acme-v02.api.letsencrypt.org/directory
+
+    # ACME DNS-01 provider configurations
+    solvers:
+    # An empty 'selector' means that this solver matches all domains
+
+    # We only use cloudflare to solve challenges for example.org.
+    # Alternative options such as 'matchLabels' and 'dnsZones' can be specified
+    # as part of a solver's selector too.
+    - selector: {}
+#        dnsNames:
+#        - "*.k3s.yorgos.net.gr"
+      dns01:
+        cloudflare:
+          email: yorgo@protonmail.com
+          # !! Remember to create a k8s secret before
+          # kubectl create secret generic cloudflare-api-key-secret
+          apiKeySecretRef:
+            name: cloudflare-api-key-secret
+            key: api-key

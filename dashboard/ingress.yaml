@@ -5,7 +5,9 @@ metadata:
   name: dashboard
   namespace: kubernetes-dashboard
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    kubernetes.io/ingress.class: traefik
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.middlewares: cert-manager-redirect-https@kubernetescrd
 spec:
   rules:
   - host: dashboard.k3s.yorgos.net.gr
@@ -19,3 +21,7 @@ spec:
               port:
                 number: 443
 
+  tls:
+    - secretName: dashboard-tls
+      hosts:
+        - dashboard.k3s.yorgos.net.gr

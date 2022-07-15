@@ -4,7 +4,9 @@ kind: Ingress
 metadata:
   name: unifi
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    kubernetes.io/ingress.class: traefik
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.middlewares: cert-manager-redirect-https@kubernetescrd
 spec:
   rules:
   - host: unifi.k3s.yorgos.net.gr
@@ -17,6 +19,10 @@ spec:
               name: unifi-controller
               port:
                 name: https-web
+  tls:
+    - secretName: unifi-tls
+      hosts:
+        - unifi.k3s.yorgos.net.gr
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

@@ -34,11 +34,20 @@ ingress:
   # @default -- See values.yaml
   main:
     enabled: true
+    annotations:
+      kubernetes.io/ingress.class: traefik
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      traefik.ingress.kubernetes.io/router.middlewares: cert-manager-redirect-https@kubernetescrd
+
     hosts:
       - host: hass.k3s.yorgos.net.gr
         paths:
           - path: /
             pathType: Prefix
+    tls:
+      - secretName: hass-tls
+        hosts:
+          - hass.k3s.yorgos.net.gr
 
 # -- Enable devices to be discoverable
 hostNetwork: true

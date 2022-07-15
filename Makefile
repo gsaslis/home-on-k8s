@@ -6,6 +6,15 @@ VERSION_KUBE_DASHBOARD=`curl -w '%{url_effective}' -I -L -s -S $(GITHUB_URL)/lat
 k3s-install:
 	ansible-playbook --inventory k3s/ansible/inventory.yaml k3s/ansible/ha_cluster.yaml
 
+.PHONY: cert-manager
+cert-manager:
+	helm install cert-manager jetstack/cert-manager \
+		--namespace cert-manager \
+	    --version v1.8.2 \
+		--create-namespace \
+		--values cert-manager/helm/cert-manager.values.yaml
+	$(KCONF) kubectl apply --filename=cert-manager/ --namespace cert-manager
+
 .PHONY: dashboard-install
 dashboard-install:
 	echo $(VERSION_KUBE_DASHBOARD)
