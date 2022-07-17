@@ -1,0 +1,30 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    deployment:
+      kind: DaemonSet
+    #    hostNetwork: true
+    #ports:
+    #  web:
+    #    redirectTo: websecure
+    # Uncomment if you want permanent http->https redirect
+    logs:
+      level: INFO
+      access:
+        enabled: false
+    additionalArguments:
+    - "--serversTransport.insecureSkipVerify=true"
+    - "--entryPoints.udp.address=:3478/udp"
+    #- "--entryPoints.web.proxyProtocol.insecure"
+    #- "--entryPoints.websecure.proxyProtocol.insecure"
+    entryPoints:
+      udp:
+        address: ":3478/udp"
+
+# See https://github.com/traefik/traefik-helm-chart/blob/master/traefik/values.yaml for more examples
+# The deployment.kind=DaemonSet and hostNetwork=true is to get real ip and x-forwarded for, and can be omitted if this is
+# not needed.
