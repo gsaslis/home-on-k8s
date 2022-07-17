@@ -54,6 +54,9 @@ nextcloud:
    		--namespace nextcloud \
     	--values nextcloud/nextcloud.values.yml
 
+nextcloud-clean:
+	helm uninstall nextcloud --namespace nextcloud
+
 .PHONY: nfs-install
 nfs-install:
 	$(KCONF) kubectl apply --filename=nfs-subdir/rbac.yaml
