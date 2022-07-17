@@ -80,6 +80,10 @@ shairport-sync:
 	$(KCONF) kubectl create namespace shairport-sync || true
 	$(KCONF) kubectl apply --filename=shairport-sync/ --namespace shairport-sync
 
+.PHONY: traefik
+traefik:
+	$(KCONF) kubectl apply --filename=traefik/ --namespace kube-system
+
 .PHONY: unifi-controller
 unifi-controller:
 	$(KCONF) kubectl create namespace unifi || true

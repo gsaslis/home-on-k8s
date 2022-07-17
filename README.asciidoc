@@ -256,6 +256,13 @@ nodeSelector:
   app: audio
 ----
 
+=== Traefik improvements
+
+Run `make traefik` to:
+
+* expose Traefik dashboard for help with debugging
+* switches from Deployment to DaemonSet, to ensure traefik runs on all Raspberries
+* provides option to enable access log on traefik.
 
 === HTTPS / TLS (with cert-manager and LetsEncrypt)
 
