@@ -113,7 +113,9 @@ serviceWeb:
   loadBalancerIPv6: ""
 
   # -- Annotations for the DHCP service
-  annotations: {}
+  annotations:
+    traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
+    traefik.ingress.kubernetes.io/service.sticky.cookie.name: "pihole"
     # metallb.universe.tf/address-pool: network-services
     # metallb.universe.tf/allow-shared-ip: pihole-svc
 
