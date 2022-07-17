@@ -45,6 +45,19 @@ mariadb:
 	$(KCONF) kubectl apply --filename=photoprism/mariadb/storage/ --namespace databases
 	$(KCONF) kubectl apply --filename=photoprism/mariadb/ --namespace databases
 
+nas-shutdown:
+	$(KCONF) kubectl scale --replicas=0 --timeout=1m statefulset/unifi-controller --namespace unifi
+	$(KCONF) kubectl scale --replicas=0 --timeout=1m statefulset/photoprism --namespace photoprism
+	$(KCONF) kubectl scale --replicas=0 --timeout=1m deployment/photoprism-mariadb --namespace databases
+	$(KCONF) kubectl scale --replicas=0 --timeout=1m deployment/nextcloud --namespace nextcloud
+	$(KCONF) kubectl scale --replicas=0 --timeout=1m deployment/nextcloud-postgres --namespace nextcloud
+
+nas-restart:
+	$(KCONF) kubectl scale --replicas=1 --timeout=5m statefulset/unifi-controller --namespace unifi
+	$(KCONF) kubectl scale --replicas=1 --timeout=5m statefulset/photoprism --namespace photoprism
+	$(KCONF) kubectl scale --replicas=1 --timeout=5m deployment/photoprism-mariadb --namespace databases
+	$(KCONF) kubectl scale --replicas=1 --timeout=5m deployment/nextcloud --namespace nextcloud
+	$(KCONF) kubectl scale --replicas=1 --timeout=5m deployment/nextcloud-postgres --namespace nextcloud
 .PHONY: nextcloud
 nextcloud:
 	$(KCONF) kubectl create namespace nextcloud || true

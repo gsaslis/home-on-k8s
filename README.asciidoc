@@ -264,6 +264,23 @@ Run `make traefik` to:
 * switches from Deployment to DaemonSet, to ensure traefik runs on all Raspberries
 * provides option to enable access log on traefik.
 
+
+=== What about Storage downtime?
+
+There are times when your Network-Attached Storage (NAS) storage will
+go down.
+
+Whether because you want to upgrade your NAS software, or because you want
+to change hard disks (and that requires downtime), or because of a power failure that exceeds your Uninterruptible Power Supply	(UPS) limits.
+
+In those cases, it is very useful to have a way to gracefully terminate
+any internal services that rely on Kubernetes persistent volumes provided
+by your NAS.
+
+In this repo, you can use the `nas-shutdown` and `nas-restart` make targets.
+
+
+
 === HTTPS / TLS (with cert-manager and LetsEncrypt)
 
 Choosing LetsEncrypt for non-self-signed (and non-paid-for) certificates
