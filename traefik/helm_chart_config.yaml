@@ -12,6 +12,8 @@ spec:
     #  web:
     #    redirectTo: websecure
     # Uncomment if you want permanent http->https redirect
+    api:
+      dashboard: true
     logs:
       level: INFO
       access:
