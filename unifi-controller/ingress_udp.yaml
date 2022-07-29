@@ -5,9 +5,9 @@ metadata:
 
 spec:
   entryPoints:
-    - unifi
+    - unifistun
   routes:
-  - services:
-    - name: unifi-controller
-      port: 3478
-      weight: 10
+    - services:
+      - name: unifi-controller
+        port: 3478
+        weight: 10                # [6]

@@ -18,11 +18,11 @@ spec:
         enabled: false
     additionalArguments:
     - "--serversTransport.insecureSkipVerify=true"
-    - "--entryPoints.udp.address=:3478/udp"
+    - "--entrypoints.unifistun.Address=:3478/udp"
     #- "--entryPoints.web.proxyProtocol.insecure"
     #- "--entryPoints.websecure.proxyProtocol.insecure"
     entryPoints:
-      udp:
+      unifistun:
         address: ":3478/udp"
 
 # See https://github.com/traefik/traefik-helm-chart/blob/master/traefik/values.yaml for more examples
