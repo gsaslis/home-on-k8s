@@ -1,7 +1,7 @@
 = Smart Home on K8s
 :toc: preamble
 
-A Smart Home running on Kubernetes (for High Availability ... and fun! 🎉 )
+A Smart Home running on Kubernetes (for High Availability ... and fun! 🎉 🎉 🎉 )
 
 == Hardware
 
