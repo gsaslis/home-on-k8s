@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    app: mimic3-tts
+  labels:
+    app.kubernetes.io/instance: mimic3-tts
+    app.kubernetes.io/name: mimic3-tts
+#    app.kubernetes.io/version: 2.0.11
+  name: mimic3-tts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: mimic3-tts
+      app.kubernetes.io/name: mimic3-tts
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: mimic3-tts
+        app.kubernetes.io/name: mimic3-tts
+    spec:
+      containers:
+      - image: mycroftai/mimic3:0.2.3
+        imagePullPolicy: IfNotPresent
+#        livenessProbe:
+#          failureThreshold: 3
+#          periodSeconds: 10
+#          successThreshold: 1
+#          tcpSocket:
+#            port: 59125
+#          timeoutSeconds: 1
+        name: mimic3-tts
+        ports:
+        - containerPort: 59125
+          name: mimic3
+          protocol: TCP
+#        readinessProbe:
+#          failureThreshold: 3
+#          periodSeconds: 10
+#          successThreshold: 1
+#          tcpSocket:
+#            port: 59125
+#          timeoutSeconds: 1
+#        startupProbe:
+#          failureThreshold: 30
+#          periodSeconds: 5
+#          successThreshold: 1
+#          tcpSocket:
+#            port: 59125
+#          timeoutSeconds: 1
+        volumeMounts:
+        - mountPath: /home/mimic3/.local/share/mycroft/mimic3
+          name: data
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: mimic3-data
