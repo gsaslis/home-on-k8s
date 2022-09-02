@@ -234,6 +234,8 @@ admin:
 # -- extraEnvironmentVars is a list of extra enviroment variables to set for pihole to use
 extraEnvVars:
   TZ: Europe/Athens
+  DNSMASQ_USER: root
+  PIHOLE_UID: 0
 
 # -- extraEnvVarsSecret is a list of secrets to load in as environment variables.
 extraEnvVarsSecret: {}
