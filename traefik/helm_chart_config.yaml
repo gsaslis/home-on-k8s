@@ -19,6 +19,7 @@ spec:
       access:
         enabled: false
     additionalArguments:
+    # This is needed for kubernetes dashboard
     - "--serversTransport.insecureSkipVerify=true"
     - "--entrypoints.unifistun.Address=:3478/udp"
     #- "--entryPoints.web.proxyProtocol.insecure"

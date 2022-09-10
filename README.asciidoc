@@ -87,6 +87,15 @@ image::images/synology_nfs_setup.png[Options,600]
 
 //todo document kubectl patch on traefik, with `--serversTransport.insecureSkipVerify=true` that allows to expose k8s dashboard
 
+To log in to the dashboard, you need to create a token:
+
+`kubectl --namespace kubernetes-dashboard create token admin-user`
+
+Use the token to log in, or add an entry to your `KUBECONFIG`:
+
+```
+    token: <the value you got from the above command>
+```
 
 == Install Smart Home applications
 
@@ -117,10 +126,6 @@ Apart from the ad-blocking functionality, running a local DNS server helps me wi
 
 As you may have noticed, I use public DNS entries to map to local IP addresses: e.g. all my apps are deployed under `*.k3s.yorgos.net.gr`.
 
-Then, I need my devices (shelly/sonoff plugs, switches, etc. etc.) to be able to connect to these apps - for example, all my switches need to connect to the MQTT server (mosquitto). BUT - **I block internet access on all these devices on my router**! So, without a local DNS server, I would need to use a single IP address for my MQTT server and somehow ensure that a load balancer runs in High-Availability behind that IP address.
-
-Instead of doing that, I can add 2 `A` records for `mosquitto.k3s.yorgos.net.gr`, for IP addresses `192.168.100.180` and `192.168.100.181` and my smart home setup will survive outages of one of the two nodes !! (I only run a single instance of mosquitto, but kubernetes will ensure it always runs on one of these two nodes and this way the clients will always find and connect to it!)
-
 You will need to create a secret in the `pihole` namespace (create it if it doesn't exist):
 
 [source,yaml]
@@ -141,11 +146,36 @@ Once the secret has been created, you can:
 
 === Mosquitto
 
+I need my smart home automation software to access my smart devices (shelly/sonoff plugs, switches, etc. etc.) - for example, all my switches need to connect to the MQTT server (mosquitto). BUT - **I block internet access on all these devices on my router**! So, without a local DNS server, I would need to use a single IP address for my MQTT server and somehow ensure that a load balancer runs in High-Availability behind that IP address.
+
+Instead of doing that, I can add 2 `A` records for `mosquitto.k3s.yorgos.net.gr`, for IP addresses `192.168.100.180` and `192.168.100.181` and my smart home setup will survive outages of one of the two nodes !! (I only run a single instance of mosquitto, but kubernetes will ensure it always runs on one of these two nodes and this way the clients will always find and connect to it!)
+
+To install mosquitto itself, use:
+
 `make mosquitto`
 
 === Home-Assistant
 
 `make home-assistant`
+
+After Home Assistant is installed, you will need to add the following section to your `configuration.yaml` (which probably lives in your NAS persistent volume folder):
+
+```yaml
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+# http:
+#   base_url: example.duckdns.org:8123
+http:
+  server_host: 0.0.0.0
+# optional ip_ban_enabled: true
+# optional login_attempts_threshold: 5
+  use_x_forwarded_for: true
+  trusted_proxies:
+  # Pod CIDR
+  - 10.42.0.0/16
+  # Node CIDR
+  - 192.168.100.0/24
+```
+
 
 === Nextcloud
 
@@ -383,6 +413,7 @@ Run `make traefik` to:
 * switches from Deployment to DaemonSet, to ensure traefik runs on all Raspberries
 * provides option to enable access log on traefik.
 
+**IMPORTANT**: the traefik dashboard will be available at `traefik.<your domain>/dashboard/`. Do **NOT** forget the `/dashboard/`, **including** the final
 
 === What about Storage downtime?
 
