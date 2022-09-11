@@ -1,0 +1,107 @@
+= Mycroft Voice Assistant
+
+== Necessary Hardware
+
+* SD Card
+* Raspberry Pi 3
+* Google AIY Voice Bonnet v2 (for the mic + speaker addon to the raspberry). Choice of hardware is important! Steps below assume this hardware.
+** https://aiyprojects.withgoogle.com/voice/[hardware assembly guide]
+** Raspberry Pi zero is too weak for mycroft, so replaced with Raspberry Pi 3b (or greater!)
+** DIY cardboard improvements to fit in the raspberry pi 3 (great fun with kids!)
+
+
+== Approach 1: Picroft (the working one)
+
+* Burn the **Picroft** image to an SD card, as per https://mycroft-ai.gitbook.io/docs/using-mycroft-ai/get-mycroft/picroft[these instructions]
+** No point to run mycroft on k3s because there is no failover that can happen anyway
+** the SD image is the recommended approach, based on my experience. Both docker image and installation of package resulted in various issues.
+
+* Boot the device
+* SSH into the device (`pi/mycroft`) and proceed with setup
+* DO NOT select the google aiy v1 voice kit **does not work with v2**, so just select a usb microphone and analog speaker, for now.
+
+Now, let's move on to installing the drivers for the Voice Bonnet:
+
+```bash
+# 1. Upgrade to kernel 5.10.103-v8+
+sudo apt-get update --allow-releaseinfo-change && sudo apt-get upgrade
+
+# 2. reboot to load new kernel
+sudo reboot
+
+# 3. install voice bonnet drivers
+echo "deb https://packages.cloud.google.com/apt aiyprojects-stable main" | sudo tee /etc/apt/sources.list.d/aiyprojects.list
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install -y aiy-voicebonnet-soundcard-dkms
+
+# 4. pulseaudio should already be installed
+
+# sudo apt-get install pulseaudio
+sudo apt-get install pulseaudio-module-zeroconf
+sudo mkdir -p /etc/pulse/daemon.conf.d/
+echo "default-sample-rate = 48000" | sudo tee /etc/pulse/daemon.conf.d/aiy.conf
+# disables built-in audio
+sudo sed -i -e "s/^dtparam=audio=on/#\0/" /boot/config.txt
+
+
+# 5. ensure /boot/config.txt does NOT have `dtoverlay=googlevoicehat-soundcard`
+
+sudo reboot
+```
+
+
+== Mycroft Skills
+
+=== Sonos skill
+
+My picroft was missing the below libraries:
+
+```bash
+sudo apt-get install libxml2-dev libxslt1-dev
+```
+
+Then follow the https://github.com/smartgic/mycroft-sonos-controller-skill[skill installation instructions], i.e. :
+
+```bash
+. mycroft-core/venv-activate.sh
+msm install https://github.com/smartgic/mycroft-sonos-controller-skill.git
+```
+
+
+== Raspbian Approach (unsuccessful, just for documentation)
+
+**Please IGNORE this section, unless you are looking for help debugging issues, or just... curious**
+
+* Install raspbian os lite (64bit) - **buster** https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2020-08-24/
+** DO NOT UPGRADE TO BULLSEYE - aiy package does not work on that kernel version
+
+* enable ssh
+* connect to wifi
+
+
+* Upgrade to kernel 5.10.103-v8+
+```bash
+sudo apt-get update --allow-releaseinfo-change && sudo apt-get upgrade
+```
+
+* Install voice bonnet drivers [instructions](https://github.com/google/aiyprojects-raspbian/blob/964f07f5b4bd2ec785cfda6f318e50e1b67d4758/HACKING.md#install-voice-bonnethat-packages) :
+```bash
+echo "deb https://packages.cloud.google.com/apt aiyprojects-stable main" | sudo tee /etc/apt/sources.list.d/aiyprojects.list
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install -y aiy-voicebonnet-soundcard-dkms
+```
+
+
+install pulseaudio on raspberry pi 3
+```bash
+sudo apt-get install pulseaudio pulseaudio-module-zeroconf
+sudo mkdir -p /etc/pulse/daemon.conf.d/
+echo "default-sample-rate = 48000" | sudo tee /etc/pulse/daemon.conf.d/aiy.conf
+sudo sed -i -e "s/^dtparam=audio=on/#\0/" /boot/config.txt
+```
+
+
+* Install docker
+* Start mycroft
