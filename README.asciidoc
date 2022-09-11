@@ -375,6 +375,18 @@ sudo sed -i -e "s/^dtparam=audio=on/#\0/" /boot/config.txt
 * Install docker
 * Start mycroft
 
+==== Mycroft Skills
+
+```bash
+sudo apt-get install libxml2-dev libxslt1-dev
+```
+
+follow instructions on https://github.com/smartgic/mycroft-sonos-controller-skill
+
+```bash
+. mycroft-core/venv-activate.sh
+msm install https://github.com/smartgic/mycroft-sonos-controller-skill.git
+```
 
 
 === Mimic3 Text-to-Speech engine
