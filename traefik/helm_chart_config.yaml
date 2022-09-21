@@ -21,12 +21,12 @@ spec:
     additionalArguments:
     # This is needed for kubernetes dashboard
     - "--serversTransport.insecureSkipVerify=true"
-    - "--entrypoints.unifistun.Address=:3478/udp"
+    #- "--entrypoints.unifistun.Address=:3478/udp"
     #- "--entryPoints.web.proxyProtocol.insecure"
     #- "--entryPoints.websecure.proxyProtocol.insecure"
-    entryPoints:
-      unifistun:
-        address: ":3478/udp"
+    #entryPoints:
+    #  unifistun:
+    #    address: ":3478/udp"
 
 # See https://github.com/traefik/traefik-helm-chart/blob/master/traefik/values.yaml for more examples
 # The deployment.kind=DaemonSet and hostNetwork=true is to get real ip and x-forwarded for, and can be omitted if this is
