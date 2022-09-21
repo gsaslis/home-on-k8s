@@ -1,4 +1,4 @@
-KCONF=KUBECONFIG=~/.kube/raspi
+KCONF=KUBECONFIG=~/.kube/k8spi
 GITHUB_URL=https://github.com/kubernetes/dashboard/releases
 VERSION_KUBE_DASHBOARD=`curl -w '%{url_effective}' -I -L -s -S $(GITHUB_URL)/latest -o /dev/null | sed -e 's|.*/||'`
 
@@ -83,7 +83,7 @@ nextcloud-clean:
 nfs-install:
 	$(KCONF) kubectl apply --filename=nfs-subdir/rbac.yaml
 	$(KCONF) kubectl apply --filename=nfs-subdir/standard/
-	$(KCONF) kubectl apply --filename=nfs-subdir/fast/
+	#$(KCONF) kubectl apply --filename=nfs-subdir/fast/
 
 
 .PHONY: photoprism
