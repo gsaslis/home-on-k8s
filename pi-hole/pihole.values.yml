@@ -289,7 +289,9 @@ dnsmasq:
 
   # -- Add custom dns entries to override the dns resolution. All lines will be added to the pihole dnsmasq configuration.
   customDnsEntries:
-  # - address=/bar.foo/192.168.178.11
+   - address=/k3s.yorgos.net.gr/192.168.100.180
+   - address=/k3s.yorgos.net.gr/192.168.100.181
+   - address=/k3s.yorgos.net.gr/192.168.100.183
 
   # -- Dnsmasq reads the /etc/hosts file to resolve ips. You can add additional entries if you like
   additionalHostsEntries: []
