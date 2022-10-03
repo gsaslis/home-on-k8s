@@ -51,6 +51,11 @@ spec:
 #          tcpSocket:
 #            port: 59125
 #          timeoutSeconds: 1
+        resources:
+          requests:
+            cpu: 2000m
+            memory: 512Mi
+
         volumeMounts:
         - mountPath: /home/mimic3/.local/share/mycroft/mimic3
           name: data

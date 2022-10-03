@@ -21,6 +21,12 @@ env:
   PUID: 1000
   PGID: 1000
 
+resources:
+ requests:
+   cpu: 500m
+   memory: 1Gi
+
+
 # -- Configures service settings for the chart. Normally this does not need to be modified.
 # @default -- See values.yaml
 service:
@@ -64,7 +70,7 @@ securityContext:
 persistence:
   config:
     enabled: true
-    storageClass: managed-nfs-storage
+    storageClass: managed-nfs-storage-fast
     size: 2Gi
 
 
