@@ -21,6 +21,7 @@ spec:
     additionalArguments:
     # This is needed for kubernetes dashboard
     - "--serversTransport.insecureSkipVerify=true"
+    # enable if you run a Unifi Network Application inside your network
     #- "--entrypoints.unifistun.Address=:3478/udp"
     #- "--entryPoints.web.proxyProtocol.insecure"
     #- "--entryPoints.websecure.proxyProtocol.insecure"
