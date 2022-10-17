@@ -25,6 +25,7 @@ spec:
     #- "--entrypoints.unifistun.Address=:3478/udp"
     #- "--entryPoints.web.proxyProtocol.insecure"
     #- "--entryPoints.websecure.proxyProtocol.insecure"
+    # enable if you run a Unifi Network Application inside your network
     #entryPoints:
     #  unifistun:
     #    address: ":3478/udp"
