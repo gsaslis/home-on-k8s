@@ -31,7 +31,9 @@ a| image::images/raspberry_pi_os_lite.png[64bit Lite,200]
 1. Ensure you have added the key to your agent with `ssh-add -K $PATH_TO_KEY`. Now try to connect via SSH and ensure you don't get a password prompt.
 
 == Preparations
-The first thing you'll need for the cluster setup is ansible. So please install ansible following the guide here: https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html[Ansible Installation Guide]
+The first thing you'll need for the cluster setup is to install Ansible on your workstation. Your workstation will connect to each of the raspberry pi nodes via SSH and run all the commands in the Ansible playbook, as you sip your beverage of choice relaxing on your chair. 
+
+You can install Ansible following the guide here: https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html[Ansible Installation Guide]
 
 You'll also need git cli in order to checkout the project and run k3s-install (see below). 
 In case it isn't already installed (try `git --version`), something like `sudo apt install git-all` will do the job.
