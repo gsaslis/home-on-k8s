@@ -30,7 +30,15 @@ a| image::images/raspberry_pi_os_lite.png[64bit Lite,200]
 1. Enable passwordless ssh, by copying your public key to the raspberry pi's `~/.ssh/authorized_keys` file. For convenience, you can also use `ssh-copy-id -i $PATH_TO_KEY pi@$PI_IP_ADDRESS`
 1. Ensure you have added the key to your agent with `ssh-add -K $PATH_TO_KEY`. Now try to connect via SSH and ensure you don't get a password prompt.
 
+== Preparations
+The first thing you'll need for the cluster setup is to install Ansible on your workstation. Your workstation will connect to each of the raspberry pi nodes via SSH and run all the commands in the Ansible playbook, as you sip your beverage of choice relaxing on your chair. 
 
+You can install Ansible following the guide here: https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html[Ansible Installation Guide]
+
+You'll also need git cli in order to checkout the project and run k3s-install (see below). 
+In case it isn't already installed (try `git --version`), something like `sudo apt install git-all` will do the job.
+
+_Finally, please have in mind that you need to change the hostname(s) of the pods where all the service will be installed. So before any make command just be sure that you've edited the appropriate file replacing my hostname(s) with yours._
 
 == Install K3s (lightweight Kubernetes)
 
@@ -41,6 +49,12 @@ The biggest choice regarding the HA setup is whether you will use an external da
 Considering I didn't have any other HA database at home, I went for the simplest - in terms of initial setup - option: the embedded etcd cluster.
 
 The `k3s-install` Makefile target will point you to the ansible playbook used.
+
+Before running `make k3s-install` you'll need to install ansible role for k3s. More info https://github.com/PyratLabs/ansible-role-k3s[here]
+
+You'll also need to alter `k3s/ansible/inventory.yaml` so it depict your hardware inventory.
+
+//@gsaslis please help here with more info
 
 === Access your shiny new cluster
 
@@ -78,8 +92,11 @@ For persistent storage, I have:
 +
 image::images/synology_nfs_setup.png[Options,600]
 
-1. Used the https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/tree/master/deploy[NFS subdir provisioner], which I have included in this repo. Install with `make nfs-install`.
+1. Used the https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/tree/master/deploy[NFS subdir provisioner], which I have included in this repo. 
+1. Edit `nfs-subdir/standard/deployment.yaml` and add your own `NFS_SERVER` and `NFS_PATH` values
+1. Install with `make nfs-install`.
 
+Please note that there is also another direcotry called `fast` inside `nfs-subdir`. You can safely ignore it as it is used only if you need a second NFS storage let's say based on faster SSD disks. If you need it you can uncomment the respective line in the Makefile and make the changes in the `deployment.yaml` file.
 
 === Kubernetes dashboard
 
