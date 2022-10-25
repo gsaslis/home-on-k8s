@@ -219,6 +219,11 @@ After you have created these 2 secrets (e.g. with `kubectl apply` ), you can go 
 
 `make mariadb photoprism`
 
+You might need to create the two namespaces before. 
+
+`kubectl create namespace photoprism` and
+`kubectl create namespace databases`
+
 
 === Unifi Controller
 
