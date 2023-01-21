@@ -19,15 +19,20 @@ spec:
       containers:
         - env:
             - name: MEM_LIMIT
-              value: 1024M
+              value: "2048"
             - name: MEM_STARTUP
-              value: 1024M
+              value: "1024"
             - name: PGID
               value: "1000"
             - name: PUID
               value: "1000"
-          image: lscr.io/linuxserver/unifi-controller:7.1.66
+          image: lscr.io/linuxserver/unifi-controller:7.3.76
           name: unifi-controller
+          resources:
+            requests:
+              memory: 1100Mi
+            limits:
+              memory: 2200Mi
           ports:
             - containerPort: 3478
               protocol: UDP
