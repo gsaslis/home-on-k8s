@@ -4,7 +4,7 @@ metadata:
   name: letsencrypt-prod
 spec:
   acme:
-    email: yorgo@protonmail.com
+    email: your@email.com
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
       name: letsencrypt-prod
@@ -19,10 +19,10 @@ spec:
     # as part of a solver's selector too.
     - selector: {}
 #        dnsNames:
-#        - "*.k3s.yorgos.net.gr"
+#        - "*.your.domain.name"
       dns01:
         cloudflare:
-          email: yorgo@protonmail.com
+          email: your@email.com
           # !! Remember to create a k8s secret before
           # kubectl create secret generic cloudflare-api-key-secret
           apiKeySecretRef:

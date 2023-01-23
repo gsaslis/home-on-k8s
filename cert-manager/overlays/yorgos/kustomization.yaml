@@ -1,0 +1,5 @@
+bases:
+- ../../base
+patchesStrategicMerge:
+- letsencrypt-prod.yaml
+- letsencrypt-staging.yaml

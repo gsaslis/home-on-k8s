@@ -1,6 +1,7 @@
 KCONF=KUBECONFIG=~/.kube/k8spi
 GITHUB_URL=https://github.com/kubernetes/dashboard/releases
 VERSION_KUBE_DASHBOARD=`curl -w '%{url_effective}' -I -L -s -S $(GITHUB_URL)/latest -o /dev/null | sed -e 's|.*/||'`
+ENVIRONMENT=yorgos
 
 .PHONY: k3s-install
 k3s-install:
@@ -13,7 +14,7 @@ cert-manager:
 	    --version v1.8.2 \
 		--create-namespace \
 		--values cert-manager/helm/cert-manager.values.yaml
-	$(KCONF) kubectl apply --filename=cert-manager/ --namespace cert-manager
+	$(KCONF) kubectl apply --kustomize=cert-manager/overlays/$(ENVIRONMENT) --namespace cert-manager
 
 .PHONY: dashboard-install
 dashboard-install:
