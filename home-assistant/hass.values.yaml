@@ -9,7 +9,7 @@ image:
   # -- image repository
   repository: lscr.io/linuxserver/homeassistant
   # -- image tag
-  tag: 2022.9.7
+  tag: 2023.2.0
   # -- image pull policy
   pullPolicy: IfNotPresent
 
