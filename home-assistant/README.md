@@ -3,7 +3,6 @@
 
 ## Upgrade to new version
 
-1. Backup current version through HomeAssistant UI
    1. Settings -> System -> Backups -> Create Backup 
    2. **Wait** a few minutes
    3. Download backup
