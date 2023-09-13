@@ -102,6 +102,12 @@ pihole:
     	--create-namespace \
     	--values pi-hole/pihole.values.yml
 
+.PHONY: piper-tts
+piper-tts:
+	$(KCONF) kubectl create namespace piper-tts || true
+	$(KCONF) kubectl apply --filename=piper-tts/pvc/ --namespace piper-tts
+	$(KCONF) kubectl apply --filename=piper-tts/ --namespace piper-tts
+
 
 .PHONY: shairport-sync
 shairport-sync:
@@ -116,3 +122,9 @@ traefik:
 unifi-controller:
 	$(KCONF) kubectl create namespace unifi || true
 	$(KCONF) kubectl apply --filename=unifi-controller/ --namespace unifi
+
+.PHONY: whisper-stt
+whisper-stt:
+	$(KCONF) kubectl create namespace whisper-stt || true
+	$(KCONF) kubectl apply --filename=whisper-stt/pvc/ --namespace whisper-stt
+	$(KCONF) kubectl apply --filename=whisper-stt/ --namespace whisper-stt

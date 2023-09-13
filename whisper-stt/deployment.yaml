@@ -1,0 +1,54 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whisper
+  annotations:
+    app: whisper-stt
+  labels:
+    app.kubernetes.io/instance: whisper-stt
+    app.kubernetes.io/name: whisper-stt
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: whisper-stt
+      app.kubernetes.io/name: whisper-stt
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: whisper-stt
+        app.kubernetes.io/name: whisper-stt
+    spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: whisper-data
+      containers:
+        - name: whisper
+          image: rhasspy/wyoming-whisper:1.0.0
+          #imagePullPolicy: IfNotPresent
+          args:
+            - --model
+            - tiny-int8
+            - --language
+            - en
+          env:
+            - name: TZ
+              value: Europe/Athens
+          ports:
+            - containerPort: 10300
+              protocol: TCP
+              name: whisper
+          volumeMounts:
+            - mountPath: /data
+              name: data
+          resources:
+            limits:
+              cpu: 12000m
+              memory: 1Gi
+            requests:
+              cpu: 100m
+              memory: 256Mi

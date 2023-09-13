@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: piper
+  annotations:
+    app: piper-tts
+  labels:
+    app.kubernetes.io/instance: piper-tts
+    app.kubernetes.io/name: piper-tts
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: piper-tts
+      app.kubernetes.io/name: piper-tts
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: piper-tts
+        app.kubernetes.io/name: piper-tts
+    spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: piper-data
+      containers:
+        - name: piper
+          image: rhasspy/wyoming-piper:1.3.2
+          #imagePullPolicy: IfNotPresent
+          args:
+            - --voice
+            - en_GB-alba-medium
+          env:
+            - name: TZ
+              value: Europe/Athens
+          ports:
+            - containerPort: 10200
+              protocol: TCP
+              name: piper
+          volumeMounts:
+            - mountPath: /data
+              name: data
+          resources:
+            limits:
+              cpu: 12000m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 256Mi

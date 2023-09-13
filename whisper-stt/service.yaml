@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whisper
+spec:
+  selector:
+    app.kubernetes.io/instance: whisper-stt
+    app.kubernetes.io/name: whisper-stt
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 10300
+      targetPort: 10300
