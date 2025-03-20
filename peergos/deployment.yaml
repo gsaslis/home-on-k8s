@@ -1,0 +1,47 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: peergos-webdav
+  annotations:
+    app: peergos-webdav
+  labels:
+    app.kubernetes.io/instance: peergos-webdav
+    app.kubernetes.io/name: peergos-webdav
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: peergos-webdav
+      app.kubernetes.io/name: peergos-webdav
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: peergos-webdav
+        app.kubernetes.io/name: peergos-webdav
+    spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: peergos-webdav-data
+      containers:
+        - name: peergos-webdav
+          image: ghcr.io/peergos/web-ui:master
+          #imagePullPolicy: IfNotPresent
+          args: [
+            "webdav",
+            "-username", "yorgos",
+            "-webdav.username", "yorgos_webdav",
+          ]
+          env:
+            - name: TZ
+              value: Europe/Athens
+          envFrom:
+            - secretRef:
+                name: peergos-secrets
+          ports:
+            - containerPort: 8090
+              protocol: TCP
+              name: http
