@@ -29,7 +29,7 @@ spec:
             - name: PROVISIONER_NAME
               value: k8s-sigs.io/nfs-subdir-external-provisioner-fast
             - name: NFS_SERVER
-              value: 192.168.100.23
+              value: 192.168.100.20
             - name: NFS_PATH
               value: /volume1/kubernetes-fast
       affinity:
@@ -45,5 +45,5 @@ spec:
       volumes:
         - name: nfs-client-root
           nfs:
-            server: 192.168.100.23
+            server: 192.168.100.20
             path: /volume1/kubernetes-fast
