@@ -14,7 +14,7 @@ spec:
     # as part of a solver's selector too.
     - selector: {}
 #        dnsNames:
-#        - "*.k3s.yorgos.net.gr"
+#        - "k3s.yorgos.net.gr"
       dns01:
         cloudflare:
           email: yorgo@protonmail.com

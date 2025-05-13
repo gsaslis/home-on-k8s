@@ -18,9 +18,9 @@ spec:
     # We only use cloudflare to solve challenges for example.org.
     # Alternative options such as 'matchLabels' and 'dnsZones' can be specified
     # as part of a solver's selector too.
-    - selector: {}
-#        dnsNames:
-#        - "*.k3s.yorgos.net.gr"
+    - selector:
+        dnsNames:
+        - "*.k3s.yorgos.net.gr"
       dns01:
         cloudflare:
           email: yorgo@protonmail.com

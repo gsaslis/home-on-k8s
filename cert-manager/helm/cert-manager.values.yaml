@@ -42,6 +42,8 @@ global:
     # retryPeriod: 15s
 
 installCRDs: true
+crds:
+  enabled: true
 
 replicaCount: 1
 
