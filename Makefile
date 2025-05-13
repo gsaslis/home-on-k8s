@@ -1,6 +1,7 @@
 KCONF=KUBECONFIG=~/.kube/k8spi
 GITHUB_URL=https://github.com/kubernetes/dashboard/releases
-VERSION_KUBE_DASHBOARD=`curl -w '%{url_effective}' -I -L -s -S $(GITHUB_URL)/latest -o /dev/null | sed -e 's|.*/||'`
+# TODO: Upgrade to latest
+VERSION_KUBE_DASHBOARD="v2.7.0"
 ENVIRONMENT=yorgos
 
 .PHONY: k3s-install
@@ -19,7 +20,7 @@ cert-manager:
 .PHONY: dashboard-install
 dashboard-install:
 	echo $(VERSION_KUBE_DASHBOARD)
-	$(KCONF) kubectl create --filename=https://raw.githubusercontent.com/kubernetes/dashboard/$(VERSION_KUBE_DASHBOARD)/aio/deploy/recommended.yaml
+	$(KCONF) kubectl apply --filename=https://raw.githubusercontent.com/kubernetes/dashboard/$(VERSION_KUBE_DASHBOARD)/aio/deploy/recommended.yaml --namespace kubernetes-dashboard
 
 .PHONY: dashboard-user
 dashboard-user:
