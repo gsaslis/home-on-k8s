@@ -289,12 +289,39 @@ dnsmasq:
 
   # -- Add custom dns entries to override the dns resolution. All lines will be added to the pihole dnsmasq configuration.
   customDnsEntries:
-   - address=/node1.k3s.yorgos.net.gr/192.168.100.180
-   - address=/node2.k3s.yorgos.net.gr/192.168.100.181
-   - address=/node3.k3s.yorgos.net.gr/192.168.100.183
-   - address=/k3s.yorgos.net.gr/192.168.100.180
-   - address=/k3s.yorgos.net.gr/192.168.100.181
-   - address=/k3s.yorgos.net.gr/192.168.100.183
+#   - address=/node1.k3s.yorgos.net.gr/192.168.100.180
+#   - address=/node2.k3s.yorgos.net.gr/192.168.100.181
+#   - address=/node3.k3s.yorgos.net.gr/192.168.100.183
+#   - address=/k3s.yorgos.net.gr/192.168.100.180
+#   - address=/k3s.yorgos.net.gr/192.168.100.181
+#   - address=/k3s.yorgos.net.gr/192.168.100.183
+   - address=/PlayRoom.kalimera.yorgos.net.gr/fe80::72f7:54ff:fedb:280d
+   - address=/PlayRoom.kalimera.yorgos.net.gr/192.168.50.19
+   - ptr-record=lb._dns-sd._udp.kalimera.yorgos.net.gr,kalimera.yorgos.net.gr
+   - ptr-record=b._dns-sd._udp.kalimera.yorgos.net.gr,kalimera.yorgos.net.gr
+   - ptr-record=D.0.8.2.B.D.E.F.F.F.4.5.7.F.2.7.0.0.0.0.0.0.0.0.0.0.0.0.0.0.8.E.F.ip6.arpa,PlayRoom.kalimera.yorgos.net.gr
+   - ptr-record=19.50.168.192.in-addr.arpa,PlayRoom.kalimera.yorgos.net.gr
+   - srv-host=PlayRoom._linkplay._tcp.kalimera.yorgos.net.gr,PlayRoom.kalimera.yorgos.net.gr,59152,0,0
+   - ptr-record=_linkplay._tcp.kalimera.yorgos.net.gr,PlayRoom._linkplay._tcp.kalimera.yorgos.net.gr
+   - ptr-record=_services._dns-sd._udp.kalimera.yorgos.net.gr,_linkplay._tcp.kalimera.yorgos.net.gr
+   - txt-record=PlayRoom._linkplay._tcp.kalimera.yorgos.net.gr,"uuid=uuid:FF98F08F-E4BE-B85C-4A86-51ECFF98F08F" "MAC=70:F7:54:DB:28:0D" "security=https 3.0" "upnp=1.0.0" "bootid=ba0e9102-1dd1-11b2-87c3-b9b174a8aede"
+   - srv-host=TidalConnect-8726f3cd2e6833464288279eb61880fc._tidalconnect._tcp.kalimera.yorgos.net.gr,PlayRoom.kalimera.yorgos.net.gr,2019,0,0
+   - ptr-record=_tidalconnect._tcp.kalimera.yorgos.net.gr,TidalConnect-8726f3cd2e6833464288279eb61880fc._tidalconnect._tcp.kalimera.yorgos.net.gr
+   - ptr-record=_services._dns-sd._udp.kalimera.yorgos.net.gr,_tidalconnect._tcp.kalimera.yorgos.net.gr
+   - txt-record=TidalConnect-8726f3cd2e6833464288279eb61880fc._tidalconnect._tcp.kalimera.yorgos.net.gr,"mn=TidalConnect" "ca=0" "id=8726f3cd2e6833464288279eb61880fc" "ve=1" "fn=PlayRoom"
+   - srv-host=70F754DB280D@PlayRoom._raop._tcp.kalimera.yorgos.net.gr,PlayRoom.kalimera.yorgos.net.gr,7000,0,0
+   - srv-host=PlayRoom._airplay._tcp.kalimera.yorgos.net.gr,PlayRoom.kalimera.yorgos.net.gr,7000,0,0
+   - srv-host=Chromecast._http._tcp.kalimera.yorgos.net.gr,PlayRoom.kalimera.yorgos.net.gr,80,0,0
+   - ptr-record=_raop._tcp.kalimera.yorgos.net.gr,70F754DB280D@PlayRoom._raop._tcp.kalimera.yorgos.net.gr
+   - ptr-record=_services._dns-sd._udp.kalimera.yorgos.net.gr,_raop._tcp.kalimera.yorgos.net.gr
+   - txt-record=70F754DB280D@PlayRoom._raop._tcp.kalimera.yorgos.net.gr,"cn=0,1" "da=true" "et=0,4" "ft=0x445F8A00,0x1C340" "fv=p20.1.56.430671" "md=0,1,2" "am=LINK 2 Wireless multiroom HiFi player" "sf=0x4" "tp=UDP" "vn=65537" "vs=366.0" "pk=46a5e24448ecf1ea5be076d583c7ba499d08efe074cf4221bd0491dd8d9350bd"
+   - ptr-record=_airplay._tcp.kalimera.yorgos.net.gr,PlayRoom._airplay._tcp.kalimera.yorgos.net.gr
+   - ptr-record=_services._dns-sd._udp.kalimera.yorgos.net.gr,_airplay._tcp.kalimera.yorgos.net.gr
+   - txt-record=PlayRoom._airplay._tcp.kalimera.yorgos.net.gr,"acl=0" "deviceid=70:F7:54:DB:28:0D" "features=0x445F8A00,0x1C340" "rsf=0x0" "fv=p20.1.56.430671" "flags=0x4" "model=LINK 2 Wireless multiroom HiFi player" "manufacturer=Audio Pro AB" "serialNumber=1234567890" "protovers=1.1" "srcvers=366.0" "pi=70:F7:54:DB:28:0D" "gid=4FA8E02B-2998-412F-98FC-593341AC259B" "gcgl=0" "pk=46a5e24448ecf1ea5be076d583c7ba499d08efe074cf4221bd0491dd8d9350bd"
+   - ptr-record=_http._tcp.kalimera.yorgos.net.gr,Chromecast._http._tcp.kalimera.yorgos.net.gr
+   - ptr-record=_services._dns-sd._udp.kalimera.yorgos.net.gr,_http._tcp.kalimera.yorgos.net.gr
+   - txt-record=Chromecast._http._tcp.kalimera.yorgos.net.gr,""
+
 
   # -- Dnsmasq reads the /etc/hosts file to resolve ips. You can add additional entries if you like
   additionalHostsEntries: []
