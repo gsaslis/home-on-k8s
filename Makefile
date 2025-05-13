@@ -89,6 +89,11 @@ nfs-install:
   # 2 storage classes: one for SSD, one for HDD.
 	#$(KCONF) kubectl apply --filename=nfs-subdir/fast/
 
+.PHONY: peergos-webdav
+peergos-webdav:
+	$(KCONF) kubectl create namespace peergos || true
+	$(KCONF) kubectl apply --filename=peergos/ --namespace peergos
+
 
 .PHONY: photoprism
 photoprism:
