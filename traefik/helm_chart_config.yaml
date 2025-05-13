@@ -7,10 +7,14 @@ spec:
   valuesContent: |-
     deployment:
       kind: DaemonSet
-    #    hostNetwork: true
-    #ports:
-    #  web:
-    #    redirectTo: websecure
+      hostNetwork: true
+    ports:
+      web:
+        redirections:
+          entryPoint:
+            to: websecure
+            scheme: https
+            permanent: true
     # Uncomment if you want permanent http->https redirect
     api:
       dashboard: true
@@ -22,13 +26,13 @@ spec:
     # This is needed for kubernetes dashboard
     - "--serversTransport.insecureSkipVerify=true"
     # enable if you run a Unifi Network Application inside your network
-    #- "--entrypoints.unifistun.Address=:3478/udp"
-    #- "--entryPoints.web.proxyProtocol.insecure"
-    #- "--entryPoints.websecure.proxyProtocol.insecure"
+    - "--entrypoints.unifistun.Address=:3478/udp"
+    - "--entryPoints.web.proxyProtocol.insecure"
+    - "--entryPoints.websecure.proxyProtocol.insecure"
     # enable if you run a Unifi Network Application inside your network
-    #entryPoints:
-    #  unifistun:
-    #    address: ":3478/udp"
+    entryPoints:
+      unifistun:
+        address: ":3478/udp"
 
 # See https://github.com/traefik/traefik-helm-chart/blob/master/traefik/values.yaml for more examples
 # The deployment.kind=DaemonSet and hostNetwork=true is to get real ip and x-forwarded for, and can be omitted if this is
