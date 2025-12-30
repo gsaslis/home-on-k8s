@@ -8,13 +8,19 @@ ENVIRONMENT=yorgos
 k3s-install:
 	ansible-playbook --inventory k3s/ansible/inventory.yaml k3s/ansible/ha_cluster.yaml
 
+cert-manager/helm/cert-manager.values.yaml:
+	helm show values --version v1.19.1 jetstack/cert-manager > $@
+
+
 .PHONY: cert-manager
 cert-manager:
-	helm install cert-manager jetstack/cert-manager \
-		--namespace cert-manager \
-	    --version v1.8.2 \
-		--create-namespace \
-		--values cert-manager/helm/cert-manager.values.yaml
+	helm upgrade --install cert-manager jetstack/cert-manager \
+	  --namespace cert-manager \
+	  --create-namespace \
+	  --version v1.19.1 \
+	  --values cert-manager/helm/cert-manager.values.yaml \
+	  --set installCRDs=true \
+      --set crds.enabled=true
 	$(KCONF) kubectl apply --kustomize=cert-manager/overlays/$(ENVIRONMENT) --namespace cert-manager
 
 .PHONY: dashboard-install
