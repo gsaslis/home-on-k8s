@@ -7,6 +7,7 @@ k3s_cluster:
       ansible_host: node1.k3s.yorgos.net.gr
       ansible_python_interpreter: /usr/bin/python3
       k3s_control_node: true
+      k3s_etcd_datastore: true
       k3s_become: true
       ansible_ssh_extra_args: -i ~/.ssh/yorgos_home_admin
 
@@ -15,9 +16,11 @@ k3s_cluster:
       ansible_host: node2.k3s.yorgos.net.gr
       ansible_python_interpreter: /usr/bin/python3
       k3s_control_node: true
+      k3s_etcd_datastore: true
       k3s_become: true
-      k3s_registration_address: node1.k3s.yorgos.net.gr
+      k3s_registration_address: api.k3s.yorgos.net.gr
       ansible_ssh_extra_args: -i ~/.ssh/yorgos_home_admin
+      k3s_state: installed
 
     node-3:
       ansible_user: pi
@@ -25,14 +28,27 @@ k3s_cluster:
       ansible_python_interpreter: /usr/bin/python3
       k3s_control_node: false
       k3s_become: true
-      k3s_registration_address: node1.k3s.yorgos.net.gr
+      k3s_registration_address: api.k3s.yorgos.net.gr
       ansible_ssh_extra_args: -i ~/.ssh/yorgos_home_admin
+      k3s_state: installed
 
     node-4:
       ansible_user: k3s
       ansible_host: 192.168.100.184
       ansible_python_interpreter: /usr/bin/python3
-      k3s_control_node: true
+      k3s_control_node: false
       k3s_become: true
-      k3s_registration_address: node1.k3s.yorgos.net.gr
+      k3s_registration_address: api.k3s.yorgos.net.gr
       ansible_ssh_extra_args: -i ~/.ssh/yorgos_home_admin
+      k3s_state: installed
+
+    node-5:
+      ansible_user: pi
+      ansible_host: node5.k3s.yorgos.net.gr
+      ansible_python_interpreter: /usr/bin/python3
+      k3s_control_node: true
+      k3s_etcd_datastore: true
+      k3s_become: true
+      k3s_registration_address: api.k3s.yorgos.net.gr
+      ansible_ssh_extra_args: -i ~/.ssh/yorgos_home_admin
+      k3s_state: installed

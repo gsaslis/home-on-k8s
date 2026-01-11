@@ -10,8 +10,9 @@ I am using:
 * Raspberry Pi 4 (4gb)
 * Raspberry Pi 4 (8gb)
 * Raspberry Pi 3 (1gb)
-** (more raspberries coming, when I can finally find more `pi` to buy)
 * 3 x https://www.amazon.com/SanDisk-Endurance-microSDXC-Adapter-Monitoring/dp/B07NY23WBG[SanDisk High Endurance 128GB SD cards]
+* Odroid N2
+* Orange Pi 5
 
 == Operating system
 
@@ -29,6 +30,17 @@ a| image::images/raspberry_pi_os_lite.png[64bit Lite,200]
 1. Run `sudo raspi-config` to connect your PI to the Wi-Fi, if not connected by Ethernet. Also change the default password.
 1. Enable passwordless ssh, by copying your public key to the raspberry pi's `~/.ssh/authorized_keys` file. For convenience, you can also use `ssh-copy-id -i $PATH_TO_KEY pi@$PI_IP_ADDRESS`
 1. Ensure you have added the key to your agent with `ssh-add -K $PATH_TO_KEY`. Now try to connect via SSH and ensure you don't get a password prompt.
+
+
+=== Armbian, with passwordless SSH access
+
+1. Burn Armbian (at the time of writing, Ubuntu Noble, CLI version), using https://github.com/armbian/imager[Armbian Imager].
+1. Connect a keyboard and HDMI cable and login with `root` / `1234`. Change the default password, set up locales, etc.
+1. Run `armbian-config` (as root, or with `sudo`) and configure accordingly.
+1. Enable passwordless sudo, by adding your newly created user (in my case, `pi`) to the `sudo` group: `sudo usermod -a -G sudo pi`
+1. For the Orange Pi 5, with an NVMe SSD, use `armbian-install` to set it up, after flashing the SD card and booting from it.
+
+
 
 == Preparations
 The first thing you'll need for the cluster setup is to install Ansible on your workstation. Your workstation will connect to each of the raspberry pi nodes via SSH and run all the commands in the Ansible playbook, as you sip your beverage of choice relaxing on your chair. 
